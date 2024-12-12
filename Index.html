@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>வேலன் ஈவென்ட்ஸ்</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for Tamil -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Tamil', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures the footer is pushed to the bottom */
+        }
+        header {
+            background-color: blue;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .navbar-toggler {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 24px;
+            position: relative;
+            left: 25px;
+        }
+        .navbar h1 {
+            margin: 0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .content-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .gallery img {
+            width: 150px;
+            height: auto;
+            border: 3px solid blue;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+        .btn-custom {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .contact-info {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .floating-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: blue;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .floating-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto; /* Pushes the footer to the bottom */
+            position: relative;
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            font-size: 24px;
+            color: white;
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            background-color: blue;
+            border-radius: 50%;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 2000;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Cart Modal Styles */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            width: 80%;
+            max-width: 400px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .cart-modal .modal-header {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cart-modal .modal-body {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-modal .modal-footer {
+            text-align: center;
+        }
+
+        .cart-modal .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .cart-modal .remove-btn {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-modal .remove-btn:hover {
+            background-color: #d9534f;
+        }
+
+        /* Add to Cart Button Green */
+        .cart-btn {
+            background-color: green;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Pop-up Notification Styles */
+        .pop-up {
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            animation: fadeInOut 2.5s ease-out;
+            z-index: 3000;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Shaking Animation for Cart Icon */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 10px;
+            }
+            .btn-custom {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <h1 style="text-align: right;">Velan Events</h1>
+        </div>
+    </header>
+    <style>
+        #GFG {
+            color: green;
+            font-size: small;
+        }
+    </style>
+
+    <section class="content-section">
+        
+       
+        <h2 class="mb-4 " style="font-size: 17px; font-weight: bold;">டெக்கரேஷன் & சாமியான பந்தல்</h2>
+        <marquee width="100%" id="GFG">
+            எங்களிடம் திருமணம் மற்றும் சுப நிகழ்ச்சிகளுக்கு பந்தல் மற்றும் டெகரேஷன் செய்து தரப்படும். திருமண மாலை மற்றும் ஒரிஜினல் பிளவ்ர் டெகரேஷன் செய்து தரப்படும்!
+        </marquee>
+
+
+        <!-- <p class="mb-4" style="font-size: 13px;">எங்களிடம் திருமணம் மற்றும் சுப நிகழ்ச்சிகளுக்கு பந்தல் மற்றும் டெகரேஷன் செய்து தரப்படும். திருமண மாலை மற்றும் ஒரிஜினல் பிளவ்ர் டெகரேஷன் செய்து தரப்படும்!</p> -->
+        <a href="tel:+919344255217" class="btn btn-custom" style="background-color: blue; text-decoration: none; color: white;">Book Now</a>
+
+    </section>
+
+    <section class="content-section">
+        <!-- <h2 class="mb-4">Our Products</h2> -->
+        <div class="gallery">
+            <div id="image1" class="text-center">
+                <img src="Decor.jpg" alt="Decoraions">
+                <p class="mt-2">Decorations</p>
+                <button class="cart-btn" onclick="addToCart('Decoraions')">Add to Cart</button>
+            </div>
+            <div id="image2" class="text-center">
+                <img src="Engae.jpg" alt="Garland of Flowers">
+                <p class="mt-2">Engagement</p>
+                <button class="cart-btn" onclick="addToCart('Garland of Flowers')">Add to Cart</button>
+            </div>
+            <div id="image3" class="text-center">
+                <img src="Flow2.jpg" alt="Chairs">
+                <p class="mt-2">Flower Garland</p>
+                <button class="cart-btn" onclick="addToCart('Chairs')">Add to Cart</button>
+            </div>
+            <div id="image4" class="text-center">
+                <img src="weddd.jpg" alt="Samiyana">
+                <p class="mt-2">Wedding Garland</p>
+                <button class="cart-btn" onclick="addToCart('Samiyana')">Add to Cart</button>
+            </div>
+            <div id="image5" class="text-center">
+                <img src="Smy.jpg" alt="Sample 2">
+                <p class="mt-2">Samiyana</p>
+                <button class="cart-btn" onclick="addToCart('Sample 2')">Add to Cart</button>
+            </div>
+            <div id="image5" class="text-center">
+                <img src="Chairs.jpg" alt="Sample 2">
+                <p class="mt-2">Chairs</p>
+                <button class="cart-btn" onclick="addToCart('Sample 2')">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Pop-up Notification -->
+    <div class="pop-up" id="popUpMessage">Item added to cart!</div>
+
+    <!-- Cart Icon -->
+    <div class="cart-icon" id="cartIcon" onclick="viewCart()">
+        🛒 <span id="cart-count">0</span>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="modal-header">
+            <span>Your Cart</span>
+            <button class="btn-close" onclick="closeCart()">&times;</button>
+        </div>
+        <div class="modal-body" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-custom" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- <footer>
+        
+        <p>&copy; 2024 Developed By :   
+            <i class="fab fa-instagram instagram-logo"></i>
+            Sathish_vj_65</p>
+    </footer> -->
+    <!-- Footer Section -->
+<footer style="background-color: #333; color: white; padding: 20px 0; text-align: center;">
+    <div>
+        <h4>Contact Us</h4>
+        <p style="font-size: 14px;">Feel free to reach out to us for more information or inquiries.</p>
+        <ul style="list-style: none; padding: 0; font-size: 14px;">
+            <li><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> +91 9344255217</li>
+            <li><i class="fas fa-envelope"></i> <strong>Email:</strong> info@example.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> Rs.Mangalam, Ramnad</li>
+        </ul>
+        <div>
+            <a href="https://www.facebook.com" target="_blank" style="color: white; font-size: 20px; margin-right: 10px;"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com" target="_blank" style="color: white; font-size: 20px; margin-right: 10px;"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank" style="color: white; font-size: 20px;"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 12px;">&copy; 2024 Developed By :   
+        <i class="fab fa-instagram instagram-logo"></i>
+        Sathish_vj_65</p>
+</footer>
+
+<!-- FontAwesome CDN for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let cart = [];
+
+        function addToCart(item) {
+            cart.push(item);
+            document.getElementById('cart-count').textContent = cart.length;
+
+            // Show the pop-up notification
+            const popUp = document.getElementById('popUpMessage');
+            popUp.style.display = 'block';
+            setTimeout(() => {
+                popUp.style.display = 'none';
+            }, 2500); // Hide after 2.5 seconds
+
+            // Trigger the cart icon shake animation
+            const cartIcon = document.getElementById('cartIcon');
+            cartIcon.classList.add('shake');
+            setTimeout(() => {
+                cartIcon.classList.remove('shake');
+            }, 500); // Shake animation duration
+        }
+
+        function viewCart() {
+            const cartModal = document.getElementById('cartModal');
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = "";  // Clear previous items
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <span>${item}</span>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+
+            // Display the modal
+            cartModal.style.display = "block";
+        }
+
+        function closeCart() {
+            const cartModal = document.getElementById('cartModal');
+            cartModal.style.display = "none";
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            document.getElementById('cart-count').textContent = cart.length;
+            viewCart();  // Refresh the cart view
+        }
+
+        function checkout() {
+            alert("Proceeding to checkout...");
+            closeCart();
+        }
+    </script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</body>
+</html>
